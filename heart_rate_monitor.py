@@ -36,20 +36,48 @@ class Monitor:
         # Prints over last line if possible
         print(str(round(self.pulse)) + " , " + str(round(self.oxygen)) + " , " +
             str(round(self.blood_low)) + " , " + str(round(self.blood_high)), end="\r")
+        print('\n')
 
     def check_values(self):
         pulse_feedback = self.check_pulse()
         oxygen_feedback = self.check_oxygen()
         blood_pressure_feedback = self.check_blood_pressure()
-        if(pulse_feedback != "normal"):
-            print('\n')
-            print('pulse:' + pulse_feedback)
-        if(oxygen_feedback != "normal"):
-            print('\n')
-            print('oxygen:' + oxygen_feedback)
-        if(blood_pressure_feedback != "normal"):
-            print('\n')
-            print('blood pressure:' + blood_pressure_feedback)
+        # if(pulse_feedback != "normal"):
+        #     print('\n')
+        #     print('pulse:' + pulse_feedback)
+        # if(oxygen_feedback != "normal"):
+        #     print('\n')
+        #     print('oxygen:' + oxygen_feedback)
+        # if(blood_pressure_feedback != "normal"):
+        #     print('\n')
+        #     print('blood pressure:' + blood_pressure_feedback)
+        if(pulse_feedback == 'very high' or pulse_feedback == 'very low'):
+            if(blood_pressure_feedback == 'high' or blood_pressure_feedback == 'very high'):
+                print('\n Call ambulance immediately')
+            else:
+                print('\n Contact doctor immediately')
+
+        elif(pulse_feedback == 'low'):
+            if(oxygen_feedback == 'low' or oxygen_feedback == 'very low'):
+                print('\n Call ambulance immediately')
+            else:
+                print('\n Make doctors appointment for physical check')
+
+        elif(pulse_feedback == 'high'):
+            print('\n Make doctors appointment for physical check')
+        else:
+            if(oxygen_feedback == 'very low' and blood_pressure_feedback == 'low'):
+                print('\n Call ambulance immediately')
+            elif(oxygen_feedback == 'low' and blood_pressure_feedback == 'low'):
+                print('\n Contact doctor immediately')
+            elif(oxygen_feedback == 'low'):
+                print('\n Make doctors appointment for physical check')
+            elif(oxygen_feedback == 'very low'):
+                print('\n Contact doctor immediately')
+            elif(blood_pressure_feedback == 'low'):
+                print('\n Pay attention to your vitals')
+            elif(blood_pressure_feedback == 'high'):
+                print('\n Pay attention to your vitals')
 
     def check_pulse(self):
         # print(self.pulse)
@@ -102,7 +130,7 @@ class Monitor:
     def run(self):
         i = 0
         print("Pulse, Oxygen level, lower blood pressure, higher blood pressure")
-        while(i < 5):
+        while(i < 500):
             self.step()
             self.print_values()
             self.check_values()
